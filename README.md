@@ -47,3 +47,6 @@ Your contributions to this repository are highly welcome! If you have additional
 This repository is licensed under the [MIT License](LICENSE), which means you are free to use, modify, and distribute the content as long as you provide attribution and include the same license in any derivative work.
 
 Happy learning and best of luck with your machine learning interviews!
+
+## **About Me**:
+I’m a seasoned Data Scientist and founder of [TowardsMachineLearning.Org](https://towardsmachinelearning.org/). I've worked on various Machine Learning, NLP, and cutting-edge deep learning frameworks to solve numerous business problems.

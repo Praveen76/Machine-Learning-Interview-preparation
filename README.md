@@ -1,5 +1,4 @@
-```markdown
-# Machine Learning Interview Questions and Answers
+# Machine Learning Interview Preparation Guide
 
 Welcome to the Machine Learning Interview Questions and Answers repository! This collection is designed to help you prepare for machine learning interviews by providing a comprehensive set of questions and detailed answers.
 
@@ -48,4 +47,3 @@ Your contributions to this repository are highly welcome! If you have additional
 This repository is licensed under the [MIT License](LICENSE), which means you are free to use, modify, and distribute the content as long as you provide attribution and include the same license in any derivative work.
 
 Happy learning and best of luck with your machine learning interviews!
-```

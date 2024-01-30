@@ -688,45 +688,91 @@ Ans: K-Means clustering is a widely used algorithm for partitioning data into cl
 Understanding these limitations is crucial for practitioners when choosing and interpreting the results of K-Means clustering. It's important to consider the characteristics of the data and the assumptions of the algorithm to ensure meaningful and accurate clustering outcomes.
 
 # Q15. Explain hierarchical clustering Architecture.
-Ans: Hierarchical clustering is a type of clustering algorithm that organizes data into a hierarchical structure of nested clusters. This algorithm does not require the user to specify the number of clusters beforehand, and it creates a tree-like structure, known as a dendrogram, which provides insights into the relationships between data points. The architecture of hierarchical clustering involves the following key components:
+Ans: Hierarchical clustering is a technique used in unsupervised machine learning to group similar data points into clusters based on a hierarchical structure. In hierarchical clustering, data points are either successively merged into a single cluster (agglomerative) or successively split into smaller clusters (divisive). The result is often visualized as a dendrogram, a tree-like structure showing the relationships between data points.
 
-1. **Distance (Dissimilarity) Matrix:**
-   - The algorithm starts with a distance matrix that represents the dissimilarity between each pair of data points. The choice of distance metric (e.g., Euclidean distance, Manhattan distance, etc.) depends on the nature of the data.
+Here are two real-time examples along with Python code for hierarchical clustering:
 
-2. **Individual Data Points as Initial Clusters:**
-   - Initially, each data point is treated as a separate cluster. The distance matrix reflects the dissimilarity between these individual data points.
+### Example 1: Customer Segmentation
 
-3. **Merge Iteratively:**
-   - The algorithm iteratively merges the closest clusters based on the dissimilarity between them. The measure used to determine the closeness of clusters can vary (single linkage, complete linkage, average linkage, etc.).
+In this example, we'll use hierarchical clustering to segment customers based on their purchasing behavior. We'll use a hypothetical dataset with features such as 'Annual Income' and 'Spending Score'.
 
-4. **Dendrogram Construction:**
-   - A dendrogram is constructed as clusters are merged. The height at which two clusters are merged in the dendrogram represents the dissimilarity between them.
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy.cluster.hierarchy import dendrogram, linkage
+from sklearn.cluster import AgglomerativeClustering
+from sklearn.datasets import make_blobs
 
-5. **Cluster Similarity Measurement:**
-   - Various methods can be used to measure the similarity or dissimilarity between clusters during the merging process. Common methods include single linkage (minimum distance between elements of the two clusters), complete linkage (maximum distance), and average linkage (average distance).
+# Generate synthetic customer data
+data, _ = make_blobs(n_samples=300, centers=5, cluster_std=1.0, random_state=42)
 
-6. **Stop Condition:**
-   - The algorithm continues merging clusters until a stopping condition is met. This condition could be a predetermined number of clusters or a threshold level of dissimilarity.
+df = pd.DataFrame(data, columns=['Annual Income', 'Spending Score'])
 
-7. **Dendrogram Interpretation:**
-   - The dendrogram provides a visual representation of the hierarchical relationships between data points and clusters. By cutting the dendrogram at a certain height, clusters are formed based on the desired level of dissimilarity.
+# Perform hierarchical clustering
+linked = linkage(df, 'ward')
 
-8. **Selection of Clusters:**
-   - The final clusters are chosen based on the results of the dendrogram cut. The number of clusters is determined by selecting a specific height on the dendrogram or by cutting it at a level that satisfies the desired number of clusters.
+# Plot the dendrogram
+plt.figure(figsize=(10, 7))
+dendrogram(linked, orientation='top', distance_sort='descending', show_leaf_counts=True)
+plt.title('Hierarchical Clustering Dendrogram')
+plt.xlabel('Sample Index')
+plt.ylabel('Distance')
+plt.show()
 
-9. **Distance Metric and Linkage Criteria:**
-   - The choice of distance metric and linkage criteria significantly influences the clustering results. Different metrics and criteria may be more suitable for different types of data and desired cluster structures.
+# Fit Agglomerative Clustering model
+cluster_model = AgglomerativeClustering(n_clusters=5, affinity='euclidean', linkage='ward')
+df['Cluster'] = cluster_model.fit_predict(df)
 
-10. **Comparison with Other Algorithms:**
-    - Hierarchical clustering is compared with other clustering algorithms like K-Means, DBSCAN, or Gaussian Mixture Models based on the nature of the data and the goals of clustering.
+# Visualize the clusters
+plt.scatter(df['Annual Income'], df['Spending Score'], c=df['Cluster'], cmap='rainbow')
+plt.title('Customer Segmentation using Hierarchical Clustering')
+plt.xlabel('Annual Income')
+plt.ylabel('Spending Score')
+plt.show()
+```
 
-11. **Implementation Considerations:**
-    - Hierarchical clustering can be implemented using agglomerative (bottom-up) or divisive (top-down) approaches. Agglomerative clustering is more common and starts with individual data points as clusters, merging them iteratively.
+### Example 2: Document Clustering
 
-12. **Dendrogram Visualization:**
-    - Visualization of the dendrogram helps in understanding the hierarchical relationships between clusters and selecting an appropriate cut for forming the final clusters.
+In this example, we'll use hierarchical clustering to cluster documents based on their content. We'll use the `TfidfVectorizer` from scikit-learn to convert text data into numerical features.
 
-Hierarchical clustering is versatile and can be applied to various types of data. The dendrogram provides a detailed view of the hierarchical structure, allowing users to explore different levels of granularity in clustering results. Despite its advantages, hierarchical clustering may not be suitable for very large datasets due to its computational complexity. Additionally, the choice of linkage criteria and distance metric requires careful consideration based on the characteristics of the data.
+```python
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.cluster import AgglomerativeClustering
+from scipy.cluster.hierarchy import dendrogram, linkage
+import matplotlib.pyplot as plt
+
+# Sample text data
+documents = ["This is the first document.",
+              "This document is the second document.",
+              "And this is the third one.",
+              "Is this the first document?"]
+
+# Convert text data into numerical features
+vectorizer = TfidfVectorizer()
+X = vectorizer.fit_transform(documents)
+
+# Perform hierarchical clustering
+linked = linkage(X.toarray(), 'ward')
+
+# Plot the dendrogram
+plt.figure(figsize=(10, 7))
+dendrogram(linked, orientation='top', distance_sort='descending', show_leaf_counts=True)
+plt.title('Hierarchical Clustering Dendrogram (Document Clustering)')
+plt.xlabel('Document Index')
+plt.ylabel('Distance')
+plt.show()
+
+# Fit Agglomerative Clustering model
+cluster_model = AgglomerativeClustering(n_clusters=2, affinity='euclidean', linkage='ward')
+clusters = cluster_model.fit_predict(X.toarray())
+
+# Display document clusters
+df = pd.DataFrame({'Document': documents, 'Cluster': clusters})
+print(df)
+```
+
+These examples illustrate how hierarchical clustering can be applied to segment customers based on their behavior or cluster documents based on their content. The dendrogram visualizations help to interpret the hierarchical structure of the clusters.
 
 # Q16. Please explain the limitations of hierarchical clustering Model.
 Ans: Hierarchical clustering is a powerful method, but it comes with certain limitations. Here are 10 limitations of hierarchical clustering, each explained with a real-time example:
